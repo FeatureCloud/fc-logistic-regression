@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build . --tag registry.featurecloud.eu:5000/fc_logistic_regression
+docker build . --tag featurecloud.ai/fc_logistic_regression

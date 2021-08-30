@@ -13,4 +13,4 @@ fc_logistic_regression:
     mode: "file"
     dir: "."
   algo:
-    max_iterations: 10000
+    max_iterations: 1000
