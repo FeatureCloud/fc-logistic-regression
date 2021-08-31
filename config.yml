@@ -8,7 +8,7 @@ fc_logistic_regression:
     test: "test.csv"
   format:
     sep: ","
-    label: "label"
+    label: "10"
   split:
     mode: "file"
     dir: "."

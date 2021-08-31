@@ -264,7 +264,7 @@ class AppLogic:
                     y_proba.to_csv(split.replace("/input", "/output") + "/" + self.proba_output, index=False)
 
                 if self.coordinator:
-                    self.data_incoming = ['DONE']
+                    self.data_incoming.append('DONE')
                     state = state_finishing
                 else:
                     self.data_outgoing = 'DONE'
