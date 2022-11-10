@@ -1,0 +1,56 @@
+fc_cross_validation:
+  input:
+    data: "data.csv"
+    label_column: "target"
+    sep: ","
+  output:
+    train: "train.csv"
+    test: "test.csv"
+    split_dir: "data"
+  cross_validation:
+    n_splits: 5
+    shuffle: true
+    stratify: true
+    random_state: 42
+
+fc_normalization:
+  input:
+    train: "train.csv"
+    test: "test.csv"
+  output:
+    train: "train_norm.csv"
+    test: "test_norm.csv"
+  format:
+    sep: ","
+    label: "target"
+  split:
+    mode: "directory"
+    dir: "data"
+  normalization: "variance"
+
+fc_logistic_regression:
+  input:
+    train: "train_norm.csv"
+    test: "test_norm.csv"
+  output:
+    pred: "pred.csv"
+    proba: "proba.csv"
+    test: "test_norm.csv"
+  format:
+    sep: ","
+    label: "target"
+  split:
+    mode: "directory"
+    dir: "data"
+  algo:
+    max_iterations: 100
+
+fc_classification_evaluation:
+  input:
+    y_true: "test_norm.csv"
+    y_pred: "pred.csv"
+  format:
+    sep: ","
+  split:
+    mode: "directory"
+    dir: "data"
