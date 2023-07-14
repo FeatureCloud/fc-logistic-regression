@@ -7,7 +7,7 @@ import joblib
 import jsonpickle
 import pandas as pd
 import yaml
-
+from sklearn import metrics
 from app.algo import Coordinator, Client
 
 
@@ -259,6 +259,11 @@ class AppLogic:
                     joblib.dump(model, split.replace("/input", "/output") + '/model.pkl')
 
                     y_pred = pd.DataFrame(model.predict(self.test_splits[split][0]), columns=["y_pred"])
+                    # this part logs the client wise test accuracy and auroc
+                    y_real = self.test_splits[split][1]
+                    y_pred_val = model.predict(self.test_splits[split][0])
+                    print("test Accuracy:", model.score(self.test_splits[split][0], self.test_splits[split][1]) )
+                    print ("test AUROC:", metrics.roc_auc_score(y_real,y_pred_val))
                     y_proba = pd.DataFrame(model.predict_proba(self.test_splits[split][0]))
                     y_pred.to_csv(split.replace("/input", "/output") + "/" + self.pred_output, index=False)
                     y_proba.to_csv(split.replace("/input", "/output") + "/" + self.proba_output, index=False)
