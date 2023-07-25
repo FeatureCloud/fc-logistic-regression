@@ -103,8 +103,14 @@ class Coordinator(Client):
         hessian_global = hessians[0]
         for i in range(1, len(hessians)):
             hessian_global = hessian_global + hessians[i]
-
-        updated_beta = self.beta_global - np.linalg.inv(hessian_global).dot(gradient_global)
+            # folowing snippet adds a small epsilon to the aggregated hassian when the determinant of the aggregated hessian in zero,
+            #this circumbends the issue of sigural matrix error during np.linalg.inv of singular matrix
+        epsilon = 1e-9
+        if np.linalg.det(hessian_global) == 0:
+            print("Singular matrix! ... using psedocound")
+            updated_beta = updated_beta = self.beta_global - np.linalg.inv(hessian_global+epsilon).dot(gradient_global)
+        else:
+            updated_beta = self.beta_global - np.linalg.inv(hessian_global).dot(gradient_global)
         if np.isnan(updated_beta).any():
             print("Overflow error. Stopped early.")
             return self.beta_global, True
